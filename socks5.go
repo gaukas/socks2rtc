@@ -74,7 +74,7 @@ func (p *Socks5Proxy) Connect(dst net.Addr) (conn net.Conn, addr net.Addr, err e
 		dialerCopy := p.rtcDialer
 		p.dialerMutex.RUnlock()
 
-		conn, addr, err = p.connect(dst)
+		conn, addr, err = p.connectOnce(dst)
 		if err != nil { // dialer is broken, try to create a new one
 			// TODO: log error
 			// need new dialer ONLY if still using the same dialer
@@ -85,7 +85,7 @@ func (p *Socks5Proxy) Connect(dst net.Addr) (conn net.Conn, addr net.Addr, err e
 				p.rtcDialer = nil
 			}
 			p.dialerMutex.Unlock()
-			randSleep := rand.Intn(5) + 1
+			randSleep := rand.Intn(5) + 1 // skipcq: GSC-G404
 			time.Sleep(time.Duration(randSleep*100) * time.Millisecond)
 		} else {
 			return
@@ -93,7 +93,7 @@ func (p *Socks5Proxy) Connect(dst net.Addr) (conn net.Conn, addr net.Addr, err e
 	}
 }
 
-func (p *Socks5Proxy) connect(dst net.Addr) (net.Conn, net.Addr, error) {
+func (p *Socks5Proxy) connectOnce(dst net.Addr) (net.Conn, net.Addr, error) {
 	conn, err := p.dial(fmt.Sprintf("%s-%s-%s", dst.Network(), dst.String(), utils.RandSeq(5)))
 	if err != nil {
 		return nil, nil, err

@@ -12,7 +12,7 @@ import (
 	"golang.org/x/net/http2"
 )
 
-var HTTPS_INSECURE = false
+var HTTPS_INSECURE = false // turn on for debug (only!)
 
 func IsHTTPS(url string) bool {
 	// check if start with https://
@@ -62,6 +62,7 @@ func utlsDial(_, addr string, cconf *ctls.Config) (net.Conn, error) {
 	tlsConn := tls.UClient(tcpConn, &tls.Config{
 		ServerName:         cconf.ServerName,
 		InsecureSkipVerify: HTTPS_INSECURE, // TODO: verify certificate
+		MinVersion:         tls.VersionTLS12,
 	},
 		tls.HelloChrome_106_Shuffle)
 

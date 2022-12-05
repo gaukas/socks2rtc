@@ -136,9 +136,9 @@ func (wsc *WebSignalClient) GetAnswer(offerID uint64) (answer []byte, err error)
 				if status.(string) == "pending" { // server yet to generate answer
 					time.Sleep(2 * time.Second)
 					continue
-				} else { // server don't know the offer ID
-					return nil, fmt.Errorf("failed to get answer, status: %s, HTTP status: %d, response: %s", status, httpStatus, resp)
 				}
+				// server don't know the offer ID
+				return nil, fmt.Errorf("failed to get answer, status: %s, HTTP status: %d, response: %s", status, httpStatus, resp)
 			} else {
 				if answerB64, ok := respMap["answer"].(string); ok {
 					answer, err := utils.FromBase64([]byte(answerB64))
@@ -403,15 +403,13 @@ func (wss *WebSignalServer) answerHandler(c *gin.Context) {
 }
 
 func (wss *WebSignalServer) startAnswerCleaner() {
-	go func() {
-		for range wss.answerCleanerTicker.C {
-			wss.answerMutex.Lock()
-			for k, v := range wss.answerMap {
-				if time.Now().After(v.Expiry) {
-					delete(wss.answerMap, k)
-				}
+	for range wss.answerCleanerTicker.C {
+		wss.answerMutex.Lock()
+		for k, v := range wss.answerMap {
+			if time.Now().After(v.Expiry) {
+				delete(wss.answerMap, k)
 			}
-			wss.answerMutex.Unlock()
 		}
-	}()
+		wss.answerMutex.Unlock()
+	}
 }
