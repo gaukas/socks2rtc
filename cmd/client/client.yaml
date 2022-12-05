@@ -1,0 +1,9 @@
+local_address: 127.0.0.1:8080
+signal_base_url: localhost:443
+timeout: 10 # in seconds
+user_id: 3
+password: C0mP1exAndL0n9P4ssw0rd
+ice_server:
+  urls:
+    - stun:stun.stunprotocol.org:3478 # Everywhere
+    - stun:stun.miwifi.com:3478 # China?
