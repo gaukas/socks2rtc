@@ -94,7 +94,7 @@ func (s *Server) handleConn(conn net.Conn) {
 	}
 }
 
-func (s *Server) handleConnect(clientConn net.Conn, req *Request) {
+func (*Server) handleConnect(clientConn net.Conn, req *Request) {
 	// Dial the remote peer
 	proxyTargetConn, err := net.Dial(req.NetworkType, req.Address)
 	if err != nil {

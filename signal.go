@@ -157,12 +157,12 @@ func (wsc *WebSignalClient) GetAnswer(offerID uint64) (answer []byte, err error)
 }
 
 // GetOffer isn't implemented by WebSignalClient.
-func (wsc *WebSignalClient) GetOffer() (offerID uint64, offerBody []byte, err error) {
+func (*WebSignalClient) GetOffer() (offerID uint64, offerBody []byte, err error) {
 	return 0, nil, fmt.Errorf("not implemented by WebSignalClient")
 }
 
 // Answer isn't implemented by WebSignalClient.
-func (wsc *WebSignalClient) Answer(_ uint64, _ []byte) error {
+func (*WebSignalClient) Answer(_ uint64, _ []byte) error {
 	return fmt.Errorf("not implemented by WebSignalClient")
 }
 
@@ -263,11 +263,11 @@ func (wss *WebSignalServer) Answer(offerID uint64, answer []byte) error {
 	return nil
 }
 
-func (wss *WebSignalServer) GetAnswer(_ uint64) (answer []byte, err error) {
+func (*WebSignalServer) GetAnswer(_ uint64) (answer []byte, err error) {
 	return nil, fmt.Errorf("not implemented")
 }
 
-func (wss *WebSignalServer) MakeOffer(_ []byte) (offerID uint64, err error) {
+func (*WebSignalServer) MakeOffer(_ []byte) (offerID uint64, err error) {
 	return 0, fmt.Errorf("not implemented")
 }
 
