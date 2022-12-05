@@ -3,13 +3,13 @@ module github.com/gaukas/socks2rtc
 go 1.19
 
 require (
-	github.com/gaukas/socks5 v0.1.1
-	github.com/gaukas/transportc v0.3.0
+	github.com/gaukas/socks5 v0.1.2
+	github.com/gaukas/transportc v0.3.1
 	github.com/gin-gonic/gin v1.8.1
 	github.com/pion/webrtc/v3 v3.1.49
 	github.com/refraction-networking/utls v1.2.0
 	golang.org/x/net v0.2.0
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (

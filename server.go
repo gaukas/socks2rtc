@@ -10,6 +10,10 @@ import (
 	"github.com/gaukas/transportc"
 )
 
+const (
+	SERVER_COMM_TIMEOUT = 30 * time.Second // more than 30s no read/write, close the connection
+)
+
 type Server struct {
 	// Config specifies the configuration for the underlying transportc.Listener.
 	// If set to nil, use a default configuration.
@@ -53,6 +57,8 @@ func (s *Server) serverloop() {
 			s.rtcListener.Stop()
 			return
 		}
+		conn.(*transportc.Conn).IdleKiller(SERVER_COMM_TIMEOUT)
+
 		go s.handleConn(conn)
 	}
 }
@@ -74,9 +80,10 @@ func (s *Server) handleConn(conn net.Conn) {
 
 	switch req.Command {
 	case CONNECT:
-		log.Printf("CONNECT %s %s, %d connections alive", req.NetworkType, req.Address, currentCnt+1)
+		log.Printf("CONNECT, %d active conn", currentCnt+1)
 		s.handleConnect(conn, req)
 	default:
+		log.Printf("Unknown command: %d", req.Command)
 		return // TODO: handle other commands
 	}
 

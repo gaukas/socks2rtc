@@ -40,6 +40,7 @@ type Socks5Proxy struct {
 
 func (p *Socks5Proxy) dial(label string) (conn net.Conn, err error) {
 	p.dialerMutex.Lock()
+	defer p.dialerMutex.Unlock()
 
 	p.createDialerOnce.Do(func() {
 		p.rtcDialer, err = p.Config.NewDialer()
@@ -47,12 +48,15 @@ func (p *Socks5Proxy) dial(label string) (conn net.Conn, err error) {
 
 	if err != nil {
 		p.createDialerOnce = sync.Once{} // reset createDialerOnce
-		p.dialerMutex.Unlock()
+		// p.dialerMutex.Unlock()
 		return nil, err
 	}
-	p.dialerMutex.Unlock()
+	// p.dialerMutex.Unlock()
 
-	ctx, cancel := context.WithTimeout(context.Background(), p.Timeout)
+	ctx, cancel := context.WithCancel(context.Background())
+	if p.Timeout > 0 {
+		ctx, cancel = context.WithTimeout(ctx, p.Timeout)
+	}
 	defer cancel()
 
 	conn, err = p.rtcDialer.DialContext(ctx, label)
@@ -60,6 +64,7 @@ func (p *Socks5Proxy) dial(label string) (conn net.Conn, err error) {
 		return
 	}
 
+	conn.(*transportc.Conn).IdleKiller(p.Timeout)
 	return
 }
 
