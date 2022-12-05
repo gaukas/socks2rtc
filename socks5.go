@@ -128,10 +128,10 @@ func (p *Socks5Proxy) connect(dst net.Addr) (net.Conn, net.Addr, error) {
 	return &Conn{rtcConn: conn}, socks5.NewAddr(resp.NetworkType, resp.Address), nil
 }
 
-func (p *Socks5Proxy) Bind(_ net.Addr) (chanConn chan net.Conn, chanAddr chan net.Addr, err error) {
+func (*Socks5Proxy) Bind(_ net.Addr) (chanConn chan net.Conn, chanAddr chan net.Addr, err error) {
 	return nil, nil, socks5.ErrCommandNotSupported
 }
 
-func (p *Socks5Proxy) UDPAssociate() (ua socks5.UDPAssociation, err error) {
+func (*Socks5Proxy) UDPAssociate() (ua socks5.UDPAssociation, err error) {
 	return nil, socks5.ErrCommandNotSupported
 }
