@@ -46,7 +46,7 @@ func (s *Server) Start() error {
 }
 
 func (s *Server) Stop() error {
-	return s.rtcListener.Stop()
+	return s.rtcListener.Close()
 }
 
 func (s *Server) serverloop() {
@@ -54,10 +54,9 @@ func (s *Server) serverloop() {
 		conn, err := s.rtcListener.Accept()
 		if err != nil {
 			log.Println("Server: Accept error: ", err)
-			s.rtcListener.Stop()
+			s.rtcListener.Close()
 			return
 		}
-		conn.(*transportc.Conn).IdleKiller(SERVER_COMM_TIMEOUT)
 
 		go s.handleConn(conn)
 	}

@@ -34,7 +34,7 @@ func main() {
 
 	socks5proxy := &socks2rtc.Socks5Proxy{
 		Config: &transportc.Config{
-			SignalMethod: webSignalClient,
+			Signal: webSignalClient,
 			WebRTCConfiguration: webrtc.Configuration{
 				ICEServers: []webrtc.ICEServer{
 					{

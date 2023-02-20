@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	ServerAddr string    `yaml:"server_addr"` // e.g., 0.0.0.0:29443
+	Timeout    int       `yaml:"timeout"`     // in seconds
 	WebSignal  WebSignal `yaml:"web_signal"`
 	ICEServer  ICEServer `yaml:"ice_server"`
 }

@@ -46,7 +46,7 @@ type WebSignalClient struct {
 //		status: "success",
 //		offer_id: <hex offer ID>
 //	}
-func (wsc *WebSignalClient) MakeOffer(offer []byte) (offerID uint64, err error) {
+func (wsc *WebSignalClient) Offer(offer []byte) (offerID uint64, err error) {
 	if wsc.BaseURL == "" {
 		return 0, fmt.Errorf("empty BaseURL is not allowed")
 	}
@@ -106,7 +106,7 @@ func (wsc *WebSignalClient) MakeOffer(offer []byte) (offerID uint64, err error) 
 //		status: "success",
 //		answer: <base64 encoded answer>
 //	}
-func (wsc *WebSignalClient) GetAnswer(offerID uint64) (answer []byte, err error) {
+func (wsc *WebSignalClient) ReadAnswer(offerID uint64) (answer []byte, err error) {
 	if wsc.BaseURL == "" {
 		return nil, fmt.Errorf("empty AnswerFromURL is not allowed")
 	}
@@ -157,7 +157,7 @@ func (wsc *WebSignalClient) GetAnswer(offerID uint64) (answer []byte, err error)
 }
 
 // GetOffer isn't implemented by WebSignalClient.
-func (*WebSignalClient) GetOffer() (offerID uint64, offerBody []byte, err error) {
+func (*WebSignalClient) ReadOffer() (offerID uint64, offerBody []byte, err error) {
 	return 0, nil, fmt.Errorf("not implemented by WebSignalClient")
 }
 
@@ -243,7 +243,7 @@ func (wss *WebSignalServer) Listen(addr string) {
 	time.Sleep(2 * time.Second)
 }
 
-func (wss *WebSignalServer) GetOffer() (offerID uint64, offerBody []byte, err error) {
+func (wss *WebSignalServer) ReadOffer() (offerID uint64, offerBody []byte, err error) {
 	offer := <-wss.offerQueue
 	return offer.offerID, offer.offer, nil
 }
@@ -263,11 +263,11 @@ func (wss *WebSignalServer) Answer(offerID uint64, answer []byte) error {
 	return nil
 }
 
-func (*WebSignalServer) GetAnswer(_ uint64) (answer []byte, err error) {
+func (*WebSignalServer) ReadAnswer(_ uint64) (answer []byte, err error) {
 	return nil, fmt.Errorf("not implemented")
 }
 
-func (*WebSignalServer) MakeOffer(_ []byte) (offerID uint64, err error) {
+func (*WebSignalServer) Offer(_ []byte) (offerID uint64, err error) {
 	return 0, fmt.Errorf("not implemented")
 }
 

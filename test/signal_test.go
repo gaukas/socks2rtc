@@ -33,13 +33,13 @@ func TestWebSignal(t *testing.T) {
 	wss.Listen("127.0.0.1:29443")
 
 	// MakeOffer should succeed
-	helloID, err := wsc.MakeOffer([]byte("Hello, world!"))
+	helloID, err := wsc.Offer([]byte("Hello, world!"))
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	// GetOffer should succeed
-	id, offer, err := wss.GetOffer()
+	id, offer, err := wss.ReadOffer()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -59,7 +59,7 @@ func TestWebSignal(t *testing.T) {
 	}
 
 	// GetAnswer should succeed
-	answer, err := wsc.GetAnswer(id)
+	answer, err := wsc.ReadAnswer(id)
 	if err != nil {
 		t.Fatal(err)
 	}

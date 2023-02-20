@@ -63,8 +63,6 @@ func (p *Socks5Proxy) dial(label string) (conn net.Conn, err error) {
 	if err != nil {
 		return
 	}
-
-	conn.(*transportc.Conn).IdleKiller(p.Timeout)
 	return
 }
 

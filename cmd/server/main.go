@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"time"
 
 	"github.com/gaukas/socks2rtc"
 	"github.com/gaukas/transportc"
@@ -45,7 +46,8 @@ func main() {
 
 	server := &socks2rtc.Server{
 		Config: &transportc.Config{
-			SignalMethod: webSignalServer,
+			Signal:  webSignalServer,
+			Timeout: time.Duration(conf.Timeout) * time.Second,
 			WebRTCConfiguration: webrtc.Configuration{
 				ICEServers: []webrtc.ICEServer{
 					{

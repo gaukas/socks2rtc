@@ -1,4 +1,5 @@
 server_addr: 0.0.0.0:29443
+timeout: 30
 web_signal:
   default_users: 
     0: SimplePassword
@@ -13,4 +14,3 @@ ice_server:
     - stun:stun3.l.google.com:19302
     - stun:stun4.l.google.com:19302
     - stun:stun.stunprotocol.org:3478
-
